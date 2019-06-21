@@ -43,7 +43,7 @@ app.post('/sms', (req, res) => {
 
   //Send sms to sender to confirm their thought was added
   const twiml = new MessagingResponse();
-  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req}`);
+  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.body}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
