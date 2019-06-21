@@ -25,10 +25,6 @@ const config = {
 }
 firebase.initializeApp(config);
 
-// firebase.database().ref('thoughts').on('value', function(snapshot) {
-//   let snapshotData = Object.keys(snapshot.val())
-// });
-
 http.createServer(app).listen(PORT || 1337, () => {
   console.log(`Express server listening on port ${PORT}`);
 });
@@ -37,7 +33,7 @@ app.post('/sms', (req, res) => {
   let cache = [];
   console.log('params', req.body);
   console.log('query', req.query)
-  console.log('I received a message', JSON.stringify(req, function(key, value) {
+  console.log('I received a message', JSON.stringify(req.body.Body, function(key, value) {
         if (typeof value === 'object' && value !== null) {
             if (cache.indexOf(value) !== -1) {
                 // Duplicate reference found, discard key
@@ -50,7 +46,7 @@ app.post('/sms', (req, res) => {
     }), '  ')
 
   //Add thoughts to firebase database
-  firebase.database().ref('thoughts').push(`${req}`)
+  firebase.database().ref('thoughts').push(`${req.body.Body}`)
 
   //Send sms to sender to confirm their thought was added
   const twiml = new MessagingResponse();
