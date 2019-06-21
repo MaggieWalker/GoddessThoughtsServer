@@ -30,27 +30,12 @@ http.createServer(app).listen(PORT || 1337, () => {
 });
 
 app.post('/sms', (req, res) => {
-  let cache = [];
-  console.log('params', req.body);
-  console.log('query', req.query)
-  console.log('I received a message', JSON.stringify(req.body.Body, function(key, value) {
-        if (typeof value === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-                // Duplicate reference found, discard key
-                return;
-            }
-            // Store value in our collection
-            cache.push(value);
-        }
-        return value;
-    }), '  ')
-
   //Add thoughts to firebase database
   firebase.database().ref('thoughts').push(`${req.body.Body}`)
 
   //Send sms to sender to confirm their thought was added
   const twiml = new MessagingResponse();
-  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req}`);
+  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! You wrote: ${req.body.Body}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
