@@ -32,14 +32,14 @@ http.createServer(app).listen(PORT || 1337, () => {
 });
 
 app.post('/sms', (req, res) => {
-  console.log('I received a message', req.body.Body)
-  console.log('another thing', req.body.To)
+  console.log('I received a message', req.json())
+  // console.log('another thing', req)
   //Add thoughts to firebase database
-  firebase.database().ref('thoughts').push(`${req.body.Body}`)
+  firebase.database().ref('thoughts').push(`${req}`)
 
   //Send sms to sender to confirm their thought was added
   const twiml = new MessagingResponse();
-  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.body.Body}`);
+  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.json()}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
