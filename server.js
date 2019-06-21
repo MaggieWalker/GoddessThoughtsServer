@@ -33,6 +33,8 @@ http.createServer(app).listen(PORT || 1337, () => {
 
 app.post('/sms', (req, res) => {
   let cache = [];
+  console.log('params', req.params);
+  console.log('query', req.query)
   console.log('I received a message', JSON.stringify(req.params, function(key, value) {
         if (typeof value === 'object' && value !== null) {
             if (cache.indexOf(value) !== -1) {
