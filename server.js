@@ -37,7 +37,7 @@ http.createServer(app).listen(PORT || 1337, () => {
 
 app.post('/sms', (req, res) => {
   console.log('I received a message', req)
-  reqData = req;
+  reqData = req.body;
   //Add thoughts to firebase database
   firebase.database().ref('thoughts').push(`New thought!`)
 
@@ -48,5 +48,5 @@ app.post('/sms', (req, res) => {
   res.end(twiml.toString());
 });
 
-console.log(reqData)
+console.log('is this what is logging?', reqData)
 
