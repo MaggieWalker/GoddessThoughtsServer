@@ -11,6 +11,7 @@ const app = express();
 let PORT = process.env.PORT || 1337
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.bodyParser());
 
 const config = {
   apiKey: process.env.API_KEY,
@@ -33,9 +34,9 @@ http.createServer(app).listen(PORT || 1337, () => {
 
 app.post('/sms', (req, res) => {
   let cache = [];
-  console.log('params', req.params);
+  console.log('params', req.body);
   console.log('query', req.query)
-  console.log('I received a message', JSON.stringify(req.params, function(key, value) {
+  console.log('I received a message', JSON.stringify(req, function(key, value) {
         if (typeof value === 'object' && value !== null) {
             if (cache.indexOf(value) !== -1) {
                 // Duplicate reference found, discard key
@@ -47,7 +48,6 @@ app.post('/sms', (req, res) => {
         return value;
     }), '  ')
 
-  // console.log('another thing', req.Body)
   //Add thoughts to firebase database
   firebase.database().ref('thoughts').push(`${req}`)
 
