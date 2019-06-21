@@ -32,8 +32,8 @@ http.createServer(app).listen(PORT || 1337, () => {
 });
 
 app.post('/sms', (req, res) => {
-  console.log('I received a message', req)
-  // console.log('another thing', req)
+  console.log('I received a message', req.req)
+  console.log('another thing', req._httpMessage)
   //Add thoughts to firebase database
   firebase.database().ref('thoughts').push(`${req}`)
 
