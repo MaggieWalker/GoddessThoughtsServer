@@ -37,7 +37,7 @@ http.createServer(app).listen(PORT || 1337, () => {
 app.post('/sms', (req, res) => {
   console.log('I received a message', req)
   const twiml = new MessagingResponse();
-  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${data}`);
+  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.data}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
