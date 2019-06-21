@@ -6,6 +6,8 @@ When a text is sent to Goddess Thoughts, it is received via Twilio. The configur
 
 We look forward to receiving your insights!
 
+Hosted @ : https://goddess-thoughts.herokuapp.com/
+
 This server uses:
 
 |_| express

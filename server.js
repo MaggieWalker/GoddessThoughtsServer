@@ -23,30 +23,24 @@ const config = {
 }
 firebase.initializeApp(config);
 
-let data = {}
-let reqData = {}
-
-firebase.database().ref('thoughts').on('value', function(snapshot) {
-  let snapshotData = Object.keys(snapshot.val())
-  data = snapshotData;
-});
+// firebase.database().ref('thoughts').on('value', function(snapshot) {
+//   let snapshotData = Object.keys(snapshot.val())
+// });
 
 http.createServer(app).listen(PORT || 1337, () => {
   console.log(`Express server listening on port ${PORT}`);
 });
 
 app.post('/sms', (req, res) => {
-  console.log('I received a message', req)
-  reqData = req.body;
+  console.log('I received a message', req.body.Body)
+  console.log('another thing', req.body.To)
   //Add thoughts to firebase database
-  firebase.database().ref('thoughts').push(`New thought!`)
+  firebase.database().ref('thoughts').push(`${req.body.Body}`)
 
   //Send sms to sender to confirm their thought was added
   const twiml = new MessagingResponse();
-  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.body}`);
+  twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req.body.Body}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
-
-console.log('is this what is logging?', reqData)
 
