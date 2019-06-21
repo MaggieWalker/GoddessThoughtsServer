@@ -24,6 +24,7 @@ const config = {
 firebase.initializeApp(config);
 
 let data = {}
+let reqData = {}
 
 firebase.database().ref('thoughts').on('value', function(snapshot) {
   let snapshotData = Object.keys(snapshot.val())
@@ -36,9 +37,12 @@ http.createServer(app).listen(PORT || 1337, () => {
 
 app.post('/sms', (req, res) => {
   console.log('I received a message', req)
+  reqData = req;
   const twiml = new MessagingResponse();
   twiml.message(`Thanks for submitting your message to Goddess Thoughts!! Here is a thing: ${req}`);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
+
+console.log(reqData)
 
