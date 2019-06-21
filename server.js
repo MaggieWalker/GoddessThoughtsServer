@@ -32,8 +32,20 @@ http.createServer(app).listen(PORT || 1337, () => {
 });
 
 app.post('/sms', (req, res) => {
-  console.log('I received a message', JSON.stringify(req, null, '  '))
-  console.log('another thing', req.Body)
+  let cache = [];
+  console.log('I received a message', JSON.stringify(req, function(key, value) {
+        if (typeof value === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+                // Duplicate reference found, discard key
+                return;
+            }
+            // Store value in our collection
+            cache.push(value);
+        }
+        return value;
+    }), '  ')
+
+  // console.log('another thing', req.Body)
   //Add thoughts to firebase database
   firebase.database().ref('thoughts').push(`${req}`)
 
