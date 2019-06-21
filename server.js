@@ -5,13 +5,14 @@ const express = require('express');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const firebase = require('firebase/app')
 require('firebase/database');
+const bodyParser = require('body-parser')
 
 const app = express();
 
 let PORT = process.env.PORT || 1337
 
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.bodyParser());
+app.use(bodyParser.urlencoded({extended: false}));
 
 const config = {
   apiKey: process.env.API_KEY,
